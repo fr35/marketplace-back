@@ -46,7 +46,7 @@ router.post('/signup', async (req, res) => {
         }
         await getSelectedDaos.gmailSend.sendMail(mailOptions)
         res.send({ success: true })
-        res.redirect('http://localhost:3000/')
+        res.redirect('https://marketplace-back-production-3756.up.railway.app/login')
     } catch (error) {
         console.log(error)
         res.send({ success: false })
@@ -59,7 +59,7 @@ router.post("/login", passport.authenticate("login"), async (req, res) => {
         const token = JWT_UTILS.createToken(user, 'secret')
         res.cookie('tokenUserCookie', token, { maxAge: 3600000 })
         res.send({ success: true });
-        res.redirect('http://localhost:3000/')
+        res.redirect('https://marketplace-back-production-3756.up.railway.app/')
     } catch (error) {
         console.log(error)
         res.send({ success: false })
@@ -73,7 +73,7 @@ router.get("/github/callback", passport.authenticate("github"), (req, res) => {
         const { user } = req
         const token = JWT_UTILS.createToken(user, 'secret')
         res.cookie('tokenUserCookie', token, { maxAge: 3600000 })
-        res.redirect('http://localhost:3000/')
+        res.redirect('https://marketplace-back-production-3756.up.railway.app/')
     } catch (error) {
         console.log(error)
         res.send({ success: false })
@@ -88,7 +88,7 @@ router.get("/twitter/callback", passport.authenticate("twitter"), (req, res) => 
         const token = JWT_UTILS.createToken(user, 'secret')
         res.cookie('tokenUserCookie', token, { maxAge: 3600000 })
         res.send({ success: true });
-        res.redirect('http://localhost:3000/')
+        res.redirect('https://marketplace-back-production-3756.up.railway.app/')
     } catch (error) {
         console.log(error)
         res.send({ success: false })
@@ -103,7 +103,7 @@ router.get("/facebook/callback", passport.authenticate("facebook"), (req, res) =
         const token = JWT_UTILS.createToken(user, 'secret')
         res.cookie('tokenUserCookie', token, { maxAge: 3600000 })
         res.send({ success: true })
-        res.redirect('http://localhost:3000/')
+        res.redirect('https://marketplace-back-production-3756.up.railway.app/')
     } catch (error) {
         console.log(error)
         res.send({ success: false })
@@ -118,7 +118,7 @@ router.get("/google/callback", passport.authenticate("google"), (req, res) => {
         const token = JWT_UTILS.createToken(user, 'secret')
         res.cookie('tokenUserCookie', token, { maxAge: 3600000 })
         res.send({ success: true });
-        res.redirect('http://localhost:3000/')
+        res.redirect('https://marketplace-back-production-3756.up.railway.app/')
     } catch (error) {
         console.log(error)
         res.send({ success: false })
@@ -130,7 +130,7 @@ router.post("/logout", (req, res) => {
         req.session.destroy();
         res.clearCookie("tokenUserCookie");
         res.send({ success: true });
-        res.redirect('http://localhost:3000/login')
+        res.redirect('https://marketplace-back-production-3756.up.railway.app/login')
     } catch (error) {
         console.log(error)
         res.send({ success: false })

@@ -1,4 +1,4 @@
-import { getSelectedDaos } from '../Dao/index.js'
+import { getSelectedDaos } from '../dao/index.js'
 import { JWT_UTILS } from '../utils/jwt.js'
 
 const isValidToken = async(req, res, next) => {

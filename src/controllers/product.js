@@ -31,11 +31,10 @@ const getById = async (req, res) => {
 
 const createProduct = async (req, res) => {
     try {
-        const { title, description, code, thumbnail, price, stock } = req.body
+        const { title, description, thumbnail, price, stock } = req.body
         const product = await JOI_VALIDATOR.product.validateAsync({
             title,
             description,
-            code,
             thumbnail,
             price,
             stock,
@@ -51,21 +50,19 @@ const createProduct = async (req, res) => {
 const updateById = async (req,res) => {
     try {
         const { id } = req.params
-        const { title, description, code, thumbnail, price, stock } = req.body
-        const product = await ProductDao.getById(id)
+        const { title, description, thumbnail, price, stock } = req.body
+        const product = await getSelectedDaos.ProductDao.getById(id)
         if (!product) {
             return res.send({ error: 'No se encontro el producto'})
         }
         if(!title) {title = product.title}
         if(!description) {description = product.description}
-        if(!code) {title = product.code}
         if(!thumbnail) {title = product.thumbnail}
         if(!price) {title = product.price}
         if(!stock) {title = product.stock}
         const updateProduct = await JOI_VALIDATOR.product.validateAsync({
             title: title,
             description: description,
-            code: code,
             thumbnail: thumbnail,
             price: price,
             stock: stock,
@@ -90,4 +87,4 @@ const deleteById = async (req, res) => {
     }
 }
 
-export const ProductController = { getAll, getById, createProduct, deleteById }
+export const ProductController = { getAll, getById, createProduct, deleteById, updateById }
