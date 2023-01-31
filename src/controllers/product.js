@@ -18,7 +18,7 @@ const getAll = async (req, res) => {
 const getById = async (req, res) => {
     try {
         const { id } = req.params
-        const product = await ProductDao.getById(id)
+        const product = await getSelectedDaos.ProductDao.getById(id)
         if (!product) {
             return res.send({ error: 'No se encontro el producto'})
         }
@@ -41,18 +41,48 @@ const createProduct = async (req, res) => {
             stock,
             timestamp: DATE_UTILS.getTimestamp(),
         })
-        const createdProduct = await ProductDao.save(product)
+        const createdProduct = await getSelectedDaos.ProductDao.save(product)
         res.send(createdProduct)
     } catch (error) {
         console.log(error)
         res.send({ success: false })
     }
 }
+const updateById = async (req,res) => {
+    try {
+        const { id } = req.params
+        const { title, description, code, thumbnail, price, stock } = req.body
+        const product = await ProductDao.getById(id)
+        if (!product) {
+            return res.send({ error: 'No se encontro el producto'})
+        }
+        if(!title) {title = product.title}
+        if(!description) {description = product.description}
+        if(!code) {title = product.code}
+        if(!thumbnail) {title = product.thumbnail}
+        if(!price) {title = product.price}
+        if(!stock) {title = product.stock}
+        const updateProduct = await JOI_VALIDATOR.product.validateAsync({
+            title: title,
+            description: description,
+            code: code,
+            thumbnail: thumbnail,
+            price: price,
+            stock: stock,
+            timestamp: DATE_UTILS.getTimestamp(),
+        })
+        const update = await getSelectedDaos.ProductDao.updateById(id, updateProduct)
+        res.send(update)
+    } catch (error) {
+        console.log(error)
+        res.send({success: false})
+    }
+}
 
 const deleteById = async (req, res) => {
     try {
         const { id } = req.params
-        await ProductDao.deleteById(id)
+        await getSelectedDaos.ProductDao.deleteById(id)
         res.send({ success: true })
     } catch (error) {
         console.log(error)

@@ -7,6 +7,8 @@ import {ProductRouter} from './routers/product.js'
 import {CartRouter} from './routers/cart.js'
 import {UserRouter} from './routers/user.js'
 import { PassportAuth } from "./middlewares/passport.js";
+import {isValidToken} from './middlewares/validToken.js'
+import { HomeRouter } from "./routers/home.js";
 
 const PORT = process.env.PORT 
 const app = express();
@@ -24,9 +26,8 @@ app.get('*', (req, res) => {
     const { url, method } = req
     res.send(`Ruta ${method} ${url} no está implementada`)
 })
-app.get('/', (req,res) => {
-    res.send('Soy un servidor en Home')
-})
+
+app.get('/', isValidToken, HomeRouter)
 app.use('/auth', UserRouter)
 app.use("/products", ProductRouter)
 app.use("/cart", CartRouter)
