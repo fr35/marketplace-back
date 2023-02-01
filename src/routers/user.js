@@ -6,6 +6,9 @@ import { JWT_UTILS } from '../utils/jwt.js'
 
 const router = Router()
 // Registro de usuario
+router.get('/signup', (req,res) => {
+    res.send('Ruta Signup')
+})
 router.post('/signup', async (req, res) => {
     try {
         const { name, lastname, username, email, password, phone, avatar, birth, address } = req.body
@@ -41,6 +44,9 @@ router.post('/signup', async (req, res) => {
     }
 })
 // Log In mediante form, se crea una cookie con la sesion
+router.get('/login', (req,res) => {
+    res.send('Ruta Log In')
+})
 router.post("/login", passport.authenticate("login"), async (req, res) => {
     try {
         const { user } = req
