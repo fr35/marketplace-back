@@ -10,7 +10,7 @@ router.post('/signup', async (req, res) => {
     try {
         const { name, lastname, username, email, password, phone, avatar, birth, address } = req.body
         // Para que llege toda la info del usuario
-        if (!name || !lastname || !username || !email || !password || !phone || !birth || !address || !avatar) return res.send({ success: false })
+        if (!name || !lastname || !username || !email || !password || !phone || !birth || !address || !avatar) return res.send({ success: false , error: "faltan parametros"})
         // Se busca si ya existe el usario en la base y se lo redirige al login
         const existUser = await UserDao.getOne({ email })
         if (existUser && existUser.password) {
@@ -37,7 +37,7 @@ router.post('/signup', async (req, res) => {
         res.redirect('https://marketplace-back-production-3756.up.railway.app/login')
     } catch (error) {
         console.log(error)
-        res.send({ success: false })
+        res.send({ success: false , error: error})
     }
 })
 // Log In mediante form, se crea una cookie con la sesion
