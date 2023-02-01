@@ -5,10 +5,10 @@ import {isValidToken} from "../middlewares/validToken.js"
 const router = Router()
 
 // Se verifica que el usuario tenga el token del log in activo
-router.get("/", isValidToken , ProductController.getAll)
-router.get("/:id", isValidToken, ProductController.getById)
-router.post("/", isValidToken, ProductController.createProduct)
-router.post('/:id/update', isValidToken, ProductController.updateById)
+router.get("/", ProductController.getAll)
+router.get("/:id", ProductController.getById)
+router.post("/", ProductController.createProduct)
+router.post('/:id/update', ProductController.updateById)
 router.delete("/:id", isValidToken,ProductController.deleteById)
 
 

@@ -68,7 +68,7 @@ const updateById = async (req,res) => {
             stock: stock,
             timestamp: DATE_UTILS.getTimestamp(),
         })
-        const update = await ProductDao.updateById(id, updateProduct)
+        const update = await ProductDao.updateById(product._id, updateProduct)
         res.send(update)
     } catch (error) {
         console.log(error)
