@@ -4,7 +4,7 @@ import { Strategy as GithubStrategy } from "passport-github2";
 import { Strategy as FacebookStrategy } from "passport-facebook"
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 import { Strategy as TwitterStrategy } from 'passport-twitter'
-import { getSelectedDaos } from "../dao/index.js";
+import { UserDao } from "../dao/index.js";
 import bCrypt from "bcrypt"
 import {config} from '../config/index.js'
 
@@ -13,7 +13,7 @@ const init = () => {
         done(null, user.id)
     })
     passport.deserializeUser(async (id, done) => {
-        const user = await getSelectedDaos.UserDao.getById(id)
+        const user = await UserDao.getById(id)
         done(null, user)
     })
     passport.use('login', new LocalStrategy({
@@ -23,7 +23,7 @@ const init = () => {
     }, async (req, email, password, done) => {
         try {
             if (!email || !password) return done(null, false)
-            const user = await getSelectedDaos.UserDao.getOne({ email: email })
+            const user = await UserDao.getOne({ email: email })
             if (!user) return done(null, false)
             const checkPassword = await bCrypt.compare(password, user.password)
             if (!checkPassword) return done(null, false)
@@ -50,7 +50,7 @@ const init = () => {
         try {
             const githubEmail = profile.emails?.[0].value
             if (!githubEmail) return done(null, false)
-            const user = await getSelectedDaos.UserDao.getOne({ email: githubEmail })
+            const user = await UserDao.getOne({ email: githubEmail })
             if (user) {
                 const userResponse = {
                     id: user._id,
@@ -67,7 +67,7 @@ const init = () => {
                 lastname: "-",
                 username: profile.username
             }
-            const createdUser = await getSelectedDaos.UserDao.save(newUser)
+            const createdUser = await UserDao.save(newUser)
             const userResponse = {
                 id: createdUser._id,
                 email: createdUser.email,
@@ -91,7 +91,7 @@ const init = () => {
         try {
             const twitterEmail = profile.emails?.[0].value
             if (!twitterEmail) return cb(null, false)
-            const user = await getSelectedDaos.UserDao.getOne({ email: twitterEmail })
+            const user = await UserDao.getOne({ email: twitterEmail })
             if (user) {
                 const userResponse = {
                     id: user._id,
@@ -108,7 +108,7 @@ const init = () => {
                 username: profile.username,
                 lastname: "-",
             }
-            const createdUser = await getSelectedDaos.UserDao.save(newUser)
+            const createdUser = await UserDao.save(newUser)
             const userResponse = {
                 id: createdUser._id,
                 email: createdUser.email,
@@ -132,7 +132,7 @@ const init = () => {
         try {
             const facebookEmail = profile._json.email
             if (!facebookEmail) return cb(null, false)
-            const user = await getSelectedDaos.UserDao.getOne({ email: facebookEmail })
+            const user = await UserDao.getOne({ email: facebookEmail })
             if (user) {
                 const userResponse = {
                     id: user._id,
@@ -149,7 +149,7 @@ const init = () => {
                 lastname: profile._json.last_name,
                 username: '-',
             }
-            const createdUser = await getSelectedDaos.UserDao.save(newUser)
+            const createdUser = await UserDao.save(newUser)
             const userResponse = {
                 id: createdUser._id,
                 email: createdUser.email,
@@ -174,7 +174,7 @@ const init = () => {
         try {
             const googleEmail = profile.emails?.[0].value
             if (!googleEmail) return cb(null, false)
-            const user = await getSelectedDaos.UserDao.getOne({ email: googleEmail })
+            const user = await UserDao.getOne({ email: googleEmail })
             if (user) {
                 const userResponse = {
                     id: user._id,
@@ -190,7 +190,7 @@ const init = () => {
                 name: profile._json.given_name,
                 lastname: profile._json.family_name,
             }
-            const createdUser = await getSelectedDaos.UserDao.save(newUser)
+            const createdUser = await UserDao.save(newUser)
             const userResponse = {
                 id: createdUser._id,
                 email: createdUser.email,

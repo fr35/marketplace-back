@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import {getSelectedDaos} from '../dao/index.js'
+import {UserDao} from '../dao/index.js'
 import bCrypt from "bcrypt";
 import { JWT_UTILS } from '../utils/jwt.js'
 
@@ -12,7 +12,7 @@ router.post('/signup', async (req, res) => {
         // Para que llege toda la info del usuario
         if (!name || !lastname || !username || !email || !password || !phone || !birth || !address || !avatar) return res.send({ success: false })
         // Se busca si ya existe el usario en la base y se lo redirige al login
-        const existUser = await getSelectedDaos.UserDao.getOne({ email })
+        const existUser = await UserDao.getOne({ email })
         if (existUser && existUser.password) {
             return res.send({ success: false, error: "el usuario ya existe" })
         }
@@ -20,7 +20,7 @@ router.post('/signup', async (req, res) => {
         const passwordHash = await bCrypt.hash(password, 10)
         // Si existe el usario pero no tiene password (google, fb, tw, etc) se le guardan los nuevos datos
         if (existUser && !existUser.password) {
-            const updateUser = await getSelectedDaos.UserDao.updateById(existUser._id, {
+            const updateUser = await UserDao.updateById(existUser._id, {
                 ...existUser,
                 username,
                 password: passwordHash,
@@ -33,18 +33,6 @@ router.post('/signup', async (req, res) => {
         }
         // Se guarda en la db el usuario y luego se envia un mail avisando que se ingreso un nuevo usuario
         await UserDao.save({ name, lastname, username, email, password: passwordHash, phone, avatar, birth, address })
-        const mailOptions = {
-            from: "Marketplace",
-            to: process.env.GMAIL_USER,
-            subject: "Nuevo Usuario",
-            html: `
-            <div>
-                <p>Nombre: ${name}</p>
-                <p>Email: ${email}</p>
-                <p>Motivo: ${username}</p>
-            </div>`,
-        }
-        await getSelectedDaos.gmailSend.sendMail(mailOptions)
         res.send({ success: true })
         res.redirect('https://marketplace-back-production-3756.up.railway.app/login')
     } catch (error) {

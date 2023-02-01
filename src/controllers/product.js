@@ -1,10 +1,10 @@
-import { getSelectedDaos } from "../dao/index.js"
+import { ProductDao} from "../dao/index.js"
 import { DATE_UTILS } from "../utils/date.js"
 import {JOI_VALIDATOR} from "../utils/joi.js"
 
 const getAll = async (req, res) => {
     try {
-        const product = await getSelectedDaos.ProductDao.getAll()
+        const product = await ProductDao.getAll()
         if (!product) {
             return res.send({ error: 'No hay productos disponibles' })
         }
@@ -18,7 +18,7 @@ const getAll = async (req, res) => {
 const getById = async (req, res) => {
     try {
         const { id } = req.params
-        const product = await getSelectedDaos.ProductDao.getById(id)
+        const product = await ProductDao.getById(id)
         if (!product) {
             return res.send({ error: 'No se encontro el producto'})
         }
@@ -40,7 +40,7 @@ const createProduct = async (req, res) => {
             stock,
             timestamp: DATE_UTILS.getTimestamp(),
         })
-        const createdProduct = await getSelectedDaos.ProductDao.save(product)
+        const createdProduct = await ProductDao.save(product)
         res.send(createdProduct)
     } catch (error) {
         console.log(error)
@@ -51,7 +51,7 @@ const updateById = async (req,res) => {
     try {
         const { id } = req.params
         const { title, description, thumbnail, price, stock } = req.body
-        const product = await getSelectedDaos.ProductDao.getById(id)
+        const product = await ProductDao.getById(id)
         if (!product) {
             return res.send({ error: 'No se encontro el producto'})
         }
@@ -68,7 +68,7 @@ const updateById = async (req,res) => {
             stock: stock,
             timestamp: DATE_UTILS.getTimestamp(),
         })
-        const update = await getSelectedDaos.ProductDao.updateById(id, updateProduct)
+        const update = await ProductDao.updateById(id, updateProduct)
         res.send(update)
     } catch (error) {
         console.log(error)
@@ -79,7 +79,7 @@ const updateById = async (req,res) => {
 const deleteById = async (req, res) => {
     try {
         const { id } = req.params
-        await getSelectedDaos.ProductDao.deleteById(id)
+        await ProductDao.deleteById(id)
         res.send({ success: true })
     } catch (error) {
         console.log(error)
