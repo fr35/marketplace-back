@@ -37,7 +37,6 @@ router.post('/signup', async (req, res) => {
         // Se guarda en la db el usuario y luego se envia un mail avisando que se ingreso un nuevo usuario
         await UserDao.save({ name, lastname, username, email, password: passwordHash, phone, avatar, birth, address })
         res.send({ success: true })
-        res.redirect('https://marketplace-back-production-3756.up.railway.app/login')
     } catch (error) {
         console.log(error)
         res.send({ success: false , error: error})
