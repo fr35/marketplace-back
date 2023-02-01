@@ -32,7 +32,7 @@ router.post('/signup', async (req, res) => {
             return res.send({ success: true });
         }
         // Se guarda en la db el usuario y luego se envia un mail avisando que se ingreso un nuevo usuario
-        await getSelectedDaos.UserDao.save({ name, lastname, username, email, password: passwordHash, phone, avatar, birth, address })
+        await UserDao.save({ name, lastname, username, email, password: passwordHash, phone, avatar, birth, address })
         const mailOptions = {
             from: "Marketplace",
             to: process.env.GMAIL_USER,
