@@ -7,7 +7,6 @@ import {ProductRouter} from './routers/product.js'
 import {CartRouter} from './routers/cart.js'
 import {UserRouter} from './routers/user.js'
 import { PassportAuth } from "./middlewares/passport.js";
-import {isValidToken} from './middlewares/validToken.js'
 import { HomeRouter } from "./routers/home.js";
 
 const PORT = process.env.PORT 
@@ -22,10 +21,7 @@ app.use(passport.session())
 
 app.use(cors())
 
-app.get('*', (req, res) => {
-    const { url, method } = req
-    res.send(`Ruta ${method} ${url} no está implementada`)
-})
+
 
 app.use('/', HomeRouter)
 app.use('/auth', UserRouter)
