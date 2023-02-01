@@ -27,7 +27,7 @@ app.get('*', (req, res) => {
     res.send(`Ruta ${method} ${url} no está implementada`)
 })
 
-app.get('/', HomeRouter)
+app.use('/', HomeRouter)
 app.use('/auth', UserRouter)
 app.use("/products", ProductRouter)
 app.use("/cart", CartRouter)
