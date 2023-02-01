@@ -39,7 +39,7 @@ router.post('/signup', async (req, res) => {
         res.send({ success: true })
     } catch (error) {
         console.log(error)
-        res.send({ success: false , error: error})
+        res.send({ success: false})
     }
 })
 // Log In mediante form, se crea una cookie con la sesion
